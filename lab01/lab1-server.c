@@ -20,9 +20,11 @@
 
 #define  BUF_SIZE  80
 
+#define  PORT 44444
 
 int main(int argc, char *argv[])
 {
+
     char buf[BUF_SIZE+1];
 
    /*
@@ -41,7 +43,7 @@ int main(int argc, char *argv[])
     */
    SA_IN addr;
    addr.sin_family = AF_INET;
-   addr.sin_port = htons(540);
+   addr.sin_port = htons(PORT);
    addr.sin_addr.s_addr = htonl(INADDR_ANY);
 
    if (bind(sock, (SA *)&addr, sizeof(SA_IN)) < 0) {  

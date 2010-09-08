@@ -41,8 +41,8 @@ int main(int argc, char *argv[])
    SA_IN addr;
    memset(&addr, 0, sizeof(addr));
    addr.sin_family = AF_INET;
-   addr.sin_port = htons(540);
-   unsigned int in_address = 153 << 24 | 90 << 16 | 192 << 8 | 1;
+   addr.sin_port = htons(44444);
+   unsigned int in_address = 153 << 24 | 90 << 16 | 102  << 8 | 73;
    addr.sin_addr.s_addr = htonl(in_address);
    if (connect(sock, (SA *)&addr, sizeof(SA_IN)) < 0) {   
       perror("on connect");
