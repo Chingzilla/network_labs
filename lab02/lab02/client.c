@@ -41,8 +41,8 @@ int main(int argc, char *argv[])
    SA_IN addr;
    memset(&addr, 0, sizeof(addr));
    addr.sin_family = AF_INET;
-   addr.sin_port = htons(44444);
-   unsigned int in_address = 127 << 24 | 0 << 16 | 0  << 8 | 1;
+   addr.sin_port = htons(540);
+   unsigned int in_address = 127 << 24 | 0 << 16 | 0 << 8 | 1;
    addr.sin_addr.s_addr = htonl(in_address);
    if (connect(sock, (SA *)&addr, sizeof(SA_IN)) < 0) {   
       perror("on connect");
@@ -57,8 +57,6 @@ int main(int argc, char *argv[])
     */ 
    send(sock, "client calling server, do you read me", 38, 0);
    send(sock, "the socket is operational", 26, 0);
-   send(sock, "client is not reading the socket, but it could", 47, 0);
-   send(sock, "client terminating session", 27, 0);
 
    /* 
     * Do a shutdown on the write half of the socket to gracefully terminate by

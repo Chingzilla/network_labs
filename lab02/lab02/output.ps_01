@@ -1,0 +1,73 @@
+UID        PID  PPID  C STIME TTY          TIME CMD
+ching     1670  1569  0 10:00 ?        00:00:00 /bin/sh /usr/bin/startkde
+ching     1784  1670  0 10:01 ?        00:00:00   /usr/bin/ssh-agent /etc/X11/xinit/Xclients
+ching     1881  1670  0 10:01 ?        00:00:00   kwrapper4 ksmserver
+ching     2322     1  0 10:02 ?        00:00:00 /opt/google/chrome/chrome --type=zygote
+ching     2352  2322  0 10:02 ?        00:00:00   /opt/google/chrome/chrome --type=extension --lang=en-US --force-fieldtest=ConnCountImpact/_conn_count_6/DnsImpact/_default_enabled_prefetch/GlobalSdch/_global_enable_sdch/IdleSktToImpact/_idle_timeout_10/SpdyImpact/_npn_with_spdy/ --channel=2317.0x455da00.1776486874
+ching     2370  2322  0 10:02 ?        00:00:01   /opt/google/chrome/chrome --type=renderer --lang=en-US --force-fieldtest=CacheSize/CacheSizeGroup_0/ConnCountImpact/_conn_count_6/DnsImpact/_default_enabled_prefetch/GlobalSdch/_global_enable_sdch/IdleSktToImpact/_idle_timeout_10/SpdyImpact/_npn_with_spdy/ --channel=2317.0x4c4a600.1592843467
+ching     2465  2322  0 10:09 ?        00:00:00   /opt/google/chrome/chrome --type=renderer --lang=en-US --force-fieldtest=CacheSize/CacheSizeGroup_0/ConnCountImpact/_conn_count_6/DnsImpact/_default_enabled_prefetch/GlobalSdch/_global_enable_sdch/IdleSktToImpact/_idle_timeout_10/SpdyImpact/_npn_with_spdy/ --channel=2317.0x55ee600.1603272654
+ching     2513  2322  0 10:17 ?        00:00:03   /opt/google/chrome/chrome --type=renderer --lang=en-US --force-fieldtest=CacheSize/CacheSizeGroup_0/ConnCountImpact/_conn_count_6/DnsImpact/_default_enabled_prefetch/GlobalSdch/_global_enable_sdch/IdleSktToImpact/_idle_timeout_10/SpdyImpact/_npn_with_spdy/ --channel=2317.0x552fe00.1779868373
+ching     2603  2322  0 10:24 ?        00:00:04   /opt/google/chrome/chrome --type=renderer --lang=en-US --force-fieldtest=CacheSize/CacheSizeGroup_0/ConnCountImpact/_conn_count_6/DnsImpact/_default_enabled_prefetch/GlobalSdch/_global_enable_sdch/IdleSktToImpact/_idle_timeout_10/SpdyImpact/_npn_with_spdy/ --channel=2317.0x498c600.43861820
+ching     2645  2322  0 10:31 ?        00:00:00   /opt/google/chrome/chrome --type=renderer --lang=en-US --force-fieldtest=CacheSize/CacheSizeGroup_0/ConnCountImpact/_conn_count_6/DnsImpact/_default_enabled_prefetch/GlobalSdch/_global_enable_sdch/IdleSktToImpact/_idle_timeout_10/SpdyImpact/_npn_with_spdy/ --channel=2317.0x4e6c600.283476611
+ching     2251     1  0 10:02 ?        00:00:00 /usr/libexec/gvfs-afc-volume-monitor
+ching     2227     1  0 10:02 ?        00:00:00 /usr/libexec/gvfs-gphoto2-volume-monitor
+ching     2213     1  0 10:02 ?        00:00:00 /usr/libexec/gvfs-gdu-volume-monitor
+ching     2207     1  0 10:02 ?        00:00:00 /usr/libexec/gconf-im-settings-daemon
+ching     2168     1  0 10:02 ?        00:00:00 /usr/bin/knetworkmanager
+ching     2158     1  0 10:02 ?        00:00:00 /usr/bin/klipper
+ching     2108     1  0 10:02 ?        00:00:00 /usr/libexec/gconfd-2
+ching     2017     1  0 10:02 ?        00:00:12 /usr/bin/konsole
+ching     2210  2017  0 10:02 pts/1    00:00:00   /bin/bash
+ching     2797  2210  1 10:49 pts/1    00:00:00     ps -u ching -f -H
+ching     2480  2017  0 10:12 pts/2    00:00:00   /bin/bash
+ching     2732  2480  0 10:43 pts/2    00:00:00     ./server
+ching     2734  2732  0 10:43 pts/2    00:00:00       ./server
+ching     2736  2732  0 10:43 pts/2    00:00:00       ./server
+ching     2670  2017  0 10:35 pts/3    00:00:00   /bin/bash
+ching     2733  2670  0 10:43 pts/3    00:00:00     ./client
+ching     2683  2017  0 10:35 pts/4    00:00:00   /bin/bash
+ching     2709  2683  0 10:40 pts/4    00:00:00     ./client
+ching     2696  2017  0 10:37 pts/5    00:00:00   /bin/bash
+ching     2735  2696  0 10:43 pts/5    00:00:00     ./client
+ching     2012     1  0 10:02 ?        00:00:00 /usr/libexec/gvfsd
+ching     2002     1  0 10:02 ?        00:00:00 /usr/libexec/im-settings-daemon
+ching     1998     1  0 10:02 ?        00:00:00 /usr/bin/pulseaudio --start --log-target=syslog
+ching     2247  1998  0 10:02 ?        00:00:00   /usr/libexec/pulse/gconf-helper
+ching     1952     1  0 10:02 ?        00:00:00 /usr/libexec/kde4/polkit-kde-authentication-agent-1 -session 102e01e9243235000128336084800000061400010_1283881354_892030
+ching     1950     1  0 10:02 ?        00:00:00 kmix -session 102e01ea23f235000125173499500000058930007_1283881354_892476
+ching     1935     1  0 10:01 ?        00:00:00 /usr/bin/nepomukserver -session 102e01e8244235000128387588900000019030006_1283881354_892707
+ching     1938  1935  0 10:01 ?        00:00:00   /usr/bin/nepomukservicestub nepomukstorage
+ching     1941  1938  0 10:01 ?        00:00:00     [nepomukservices] <defunct>
+ching     1962  1938  0 10:02 ?        00:00:01     /usr/bin/virtuoso-t +foreground +configfile /tmp/virtuoso_hX1938.ini +wait
+ching     2254  1935  0 10:02 ?        00:00:00   /usr/bin/nepomukservicestub nepomukontologyloader
+ching     2255  1935  0 10:02 ?        00:00:00   /usr/bin/nepomukservicestub nepomukremovablestorageservice
+ching     2256  1935  0 10:02 ?        00:00:00   /usr/bin/nepomukservicestub digikamnepomukservice
+ching     2257  1935  0 10:02 ?        00:00:00   /usr/bin/nepomukservicestub nepomukqueryservice
+ching     2258  1935  0 10:02 ?        00:00:00   /usr/bin/nepomukservicestub nepomukfilewatch
+ching     2259  1935  0 10:02 ?        00:00:00   /usr/bin/nepomukservicestub nepomukstrigiservice
+ching     1934     1  0 10:01 ?        00:00:01 /usr/bin/krunner
+ching     1923     1  0 10:01 ?        00:00:00 kxkb
+ching     1915     1  0 10:01 ?        00:00:00 /usr/bin/kaccess
+ching     1910     1  0 10:01 ?        00:00:00 /usr/bin/knotify4
+ching     1907     1  0 10:01 ?        00:00:00 /usr/bin/kglobalaccel
+ching     1886     1  0 10:01 ?        00:00:05 /usr/bin/plasma-desktop
+ching     1874     1  0 10:01 ?        00:00:00 /usr/libexec/gam_server
+ching     1872     1  0 10:01 ?        00:00:00 kded4
+ching     1869     1  0 10:01 ?        00:00:00 kdeinit4: kdeinit4 Running...                  
+ching     1870  1869  0 10:01 ?        00:00:00   klauncher --fd=9
+ching     1882  1869  0 10:01 ?        00:00:00   ksmserver
+ching     1884  1882  0 10:01 ?        00:00:27     kwin -session 1019323d21721b000113863650700000054730000_1283881355_772217
+ching     1945  1869  0 10:01 ?        00:00:00   /usr/bin/pam-panel-icon --sm-client-id 1019323d21721b000113863651100000054730006
+ching     1979  1869  0 10:02 ?        00:00:00   kdeinit4: kio_trash [kdeinit] trash local:/tmp/ksocket-ching/klauncherMT1870.slave-socket local:/tmp/ksocket-ching/krunnerEN1934.slave-socket
+ching     2018  1869  0 10:02 ?        00:00:00   /usr/bin/abrt-applet
+ching     2081  1869  0 10:02 ?        00:00:00   /usr/bin/deja-dup-monitor
+ching     2109  1869  0 10:02 ?        00:00:00   python /usr/bin/printer-applet
+ching     2161  1869  0 10:02 ?        00:00:00   /usr/bin/xsettings-kde
+ching     2317  1869  0 10:02 ?        00:00:17   /opt/google/chrome/google-chrome
+ching     2320  2317  0 10:02 ?        00:00:00     /opt/google/chrome/google-chrome
+ching     2516  2317  0 10:17 ?        00:00:09     /opt/google/chrome/chrome --type=plugin --plugin-path=/usr/lib64/mozilla/plugins/libflashplayer.so --lang=en-US --plugin-data-dir=/students/ching/.config/google-chrome/Default --channel=2317.0x55ed438.768197809
+ching     1868     1  0 10:01 ?        00:00:00 /usr/libexec/kde4/start_kdeinit +kcminit_startup
+ching     1810     1  0 10:01 ?        00:00:00 /usr/bin/gpg-agent -s --daemon --write-env-file
+ching     1686     1  0 10:00 ?        00:00:00 /bin/dbus-daemon --fork --print-pid 5 --print-address 7 --session
+ching     1685     1  0 10:00 ?        00:00:00 dbus-launch --sh-syntax --exit-with-session
+ching     1668     1  0 10:00 ?        00:00:00 /usr/bin/gnome-keyring-daemon --daemonize --login
