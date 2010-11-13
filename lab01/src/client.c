@@ -10,13 +10,7 @@
 #include <unistd.h>
 #include <string.h>
 
-#include <sys/types.h>
-#include <sys/socket.h>
-#include <netinet/in.h>
-
-#define  SA     struct sockaddr
-#define  SA_IN  struct sockaddr_in
-
+#include "network.h"
 
 int main(int argc, char *argv[])
 {
@@ -41,9 +35,8 @@ int main(int argc, char *argv[])
    SA_IN addr;
    memset(&addr, 0, sizeof(addr));
    addr.sin_family = AF_INET;
-   addr.sin_port = htons(540);
-   unsigned int in_address = 153 << 24 | 90 << 16 | 192 << 8 | 1;
-   addr.sin_addr.s_addr = htonl(in_address);
+   addr.sin_port = htons(PORT_NUM);
+   addr.sin_addr.s_addr = inet_addr(DEFAULT_IP);
    if (connect(sock, (SA *)&addr, sizeof(SA_IN)) < 0) {   
       perror("on connect");
       exit(-1);

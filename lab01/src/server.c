@@ -10,16 +10,7 @@
 #include <stdio.h>
 #include <unistd.h>
 
-#include <sys/types.h>
-#include <sys/socket.h>
-#include <netinet/in.h> 
-#include <arpa/inet.h>
-
-#define  SA     struct sockaddr
-#define  SA_IN  struct sockaddr_in
-
-#define  BUF_SIZE  80
-
+#include "network.h"
 
 int main(int argc, char *argv[])
 {
@@ -41,7 +32,7 @@ int main(int argc, char *argv[])
     */
    SA_IN addr;
    addr.sin_family = AF_INET;
-   addr.sin_port = htons(540);
+   addr.sin_port = htons(PORT_NUM);
    addr.sin_addr.s_addr = htonl(INADDR_ANY);
 
    if (bind(sock, (SA *)&addr, sizeof(SA_IN)) < 0) {  
