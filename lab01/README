@@ -1,0 +1,17 @@
+Lab 1
+
+Objectives
+1. Become familiar with the lab environment
+2. Start to work on TCP socket programming
+
+In-Lab Assignment:
+Download the lab1-client.c and lab1-server.c programs. These use the IP network to communicate, but for now, you can run them on the same machine. Note that in this example the address is set to 153.90.192.1, but you should change it to the IP address of your machine. In addition, choose a port number other than 540, which is a well-known port forbidden to user programs. You can choose any number between 1024 and 65535, but something larger than 49151 is in keeping with IANA's assignments. Compile the programs, run them, and have your output checked by the TA.
+
+Note:
+* You can find the IP address of your machine by examining the output of the command /sbin/ifconfig (or by looking at the sticker on the box).
+* The example programs make use of some C99 extensions. To compile them, use a command like gcc -std=c99 -o myoutput myinput.c .
+* DO NOT RUN THESE PROGRAMS ON ESUS! Esus is a general purpose server. If you leave extra processes running, or make a mistake that causes esus to crash, everyone will suffer. Therefore, use the machines in EPS 254 or your own machines for all lab assignments.
+* You can run the client and server programs in a single window with background execution (put a & character last on the command line) or run them in different windows. To make sure all your processes have terminated, use ps -u your.name, and if necessary kill any leftover processes with kill pid.
+
+Reading:
+Chapters 1.4.1 - 1.4.2, computer Networks by Larry Peterson
