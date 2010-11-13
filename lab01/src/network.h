@@ -14,7 +14,7 @@
 #define	SA	struct sockaddr
 #define SA_IN	struct sockaddr_in
 
-#define	BUFF_SIZE	80
+#define	BUF_SIZE	80
 
 #define PORT_NUM	55555
 #define DEFAULT_IP	"127.0.0.1"
