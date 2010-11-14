@@ -1,0 +1,6 @@
+ --> connection made with client 127.0.0.1
+client calling server, do you read me
+the socket is operational
+client is not reading the socket, but it could
+client terminating session
+ --> all messages read - connection being closed
