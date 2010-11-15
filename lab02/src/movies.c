@@ -7,30 +7,25 @@
 #include <string.h>
 
 #define MOVIESFILE = "../data/movies.txt"
+#define MAXMOVIES = 15
 
 #define MOVIENOTFOUND = "Movie \"%s not\" found in database\n"
 
 FILE * movie_file;
 
-char * movie_header;
-char * movie_info = NULL;
-
-typedef struct MovieElement
-{
-	char * movie_string;
-	MovieElement * next;
-}
-
+char ** movie_list;
 int movie_count;
-MovieElement * movie_root;
 
 void readMovies()
 {
 	movie_count = 0;
+	movie_list = (char**) malloc(MAXMOVIES);
+
+	for(int i, i < MAXMOVIES)
+	{
+	movie_list[i] = maloc(sizeof(char) * 80);
 	
-	//add 1st movie to list
-	movie_root = maloc(sizeof(MovieElement);
-	//todo
+	}
 }
 
 int init(char * file_path)
@@ -38,7 +33,8 @@ int init(char * file_path)
 	if (file_path == NULL)
 	{
 		movie_file = MOVIESFILE;
-	}else
+	}
+	else
 	{
 		movie_file = file_path;
 	}
