@@ -1,0 +1,11 @@
+Title                       Year  Company                Runtime    Tomatometer
+-------------------------------------------------------------------------------
+Fargo                       1996  Polygram Filmed Ent.   98 min     94%
+No Country for Old Men      2007  Paramount Vantage      122 min    95%
+The Hudsucker Proxy         1994  Polygram Filmed Ent.   111 min    58%
+Burn After Reading          2008  Mike Zoss Productions  96 min     78%
+The Big Lebowski            1998  Polygram Filmed Ent.   117 min    78%
+O Brother, Where Art Thou?  2000  Touchstone Pictures    106 min    76%
+Blood Simple                1985  River Road Productions 99 min     95%
+Raising Arizona             1987  Circle Films           94 min     90%
+
