@@ -8,4 +8,7 @@
 #define PORT "55555"
 #define ADDRESS "127.0.0.1"
 
-#endif
+#define SA      struct sockaddr
+#define SA_IN   struct sockaddr_in
+
+#endif	// CONNECTION_C

@@ -23,19 +23,19 @@ int main(int argc, char *argv[]){
     }
     
     // Connect to server
-    struct sockaddr addr;
+    SA_IN addr;
     memset(&addr, 0, sizeof(addr));
     addr.sin_family = AF_INET;
     addr.sin_port = htons(PORT);
-    // set server IP
-    inet_aton(ADDRESS, addr.sin_addr);
+    addr.sin_addr.s_addr = inet_addr(ADDRESS);
+    
     // test connection
-    if (connect(sock, (struct sockaddr *)&addr, sizeof(struct sockaddr_in) < 0){
-        perror("didn't connect");
+    if (connect(sock, (SA *)&addr, sizeof(SA_IN) < 0)){
+        perror("on connect");
         exit(-1);
     }
 
-    printf("Connected to %s\n", ADDRESS)
+    printf("Connected to %s\n", ADDRESS);
 
     char movie_title[MAXMOVIESIZE];
 
