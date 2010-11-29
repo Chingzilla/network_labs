@@ -10,7 +10,7 @@
 #include <netinet/in.h>
 #include <arpa/inet.h>
 
-#define PORT "55555"
+#define PORT 55555
 #define ADDRESS "127.0.0.1"
 
 #define MAXBUFFSIZE 128

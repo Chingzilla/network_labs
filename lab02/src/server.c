@@ -45,13 +45,15 @@ int main(int argc, char *argv[])
     /*
      * Init movies database
     */
+    printf("init movies\n");
     movies_init(NULL);
-
+    printf("done\n");
     char buf[MAXBUFFSIZE+1];
 
    /*
     * Create the server (listen) socket.
     */
+   printf("Opening socket");
    int sock = socket(AF_INET, SOCK_STREAM, 0);
    if (sock < 0) {   
       perror("opening socket");

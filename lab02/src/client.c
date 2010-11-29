@@ -28,7 +28,7 @@ int main(int argc, char *argv[]){
     addr.sin_addr.s_addr = inet_addr(ADDRESS);
     
     // test connection
-    if (connect(sock, (SA *)&addr, sizeof(SA_IN) < 0)){
+    if (connect(sock, &addr, sizeof(SA_IN) < 0)){
         perror("on connect");
         exit(-1);
     }

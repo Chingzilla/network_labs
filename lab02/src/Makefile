@@ -3,7 +3,7 @@
 all:	server client
 
 server: movies.o
-	gcc -std=c99 server.o movies.o -o server
+	gcc -std=c99 server.c movies.o -o server
 
 client:
 	gcc -std=c99 client.c -o client
