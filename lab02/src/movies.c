@@ -7,28 +7,39 @@
 #include <string.h>
 
 #define MOVIESFILE = "../data/movies.txt"
-#define MAXMOVIES = 15
+#define MAXMOVIES = 100
+#define MOIVETITLELEN = 80
 
 #define MOVIENOTFOUND = "Movie \"%s not\" found in database\n"
 
 FILE * movie_file;
 
-char ** movie_list;
+char * movie_list[MAXMOVIES];
 int movie_count;
 
 void readMovies()
 {
 	movie_count = 0;
-	movie_list = (char**) malloc(MAXMOVIES);
 
-	for(int i, i < MAXMOVIES)
-	{
-	movie_list[i] = maloc(sizeof(char) * 80);
-	
+	for(int i, i < MAXMOVIES){
+		//check if at EOF
+		if(feof(movie_file)){
+			break;
+		}
+		movie_list[i] = maloc(sizeof(char) * MOIVETITLELEN);
+		
+		//get movie, break loop if error
+		if (fgets(movie_list[i], MOIVETITLELEN, movie_file) == NULL){
+			break;
+		}
+		movie_count++;
 	}
+
+	fclose(movie_file)
+	return;
 }
 
-int init(char * file_path)
+int movies_init(char * file_path)
 {
 	if (file_path == NULL)
 	{
@@ -41,11 +52,18 @@ int init(char * file_path)
 
 	movie_file = fopen(&movie_file, "r");
 	
+	if (movie_file == NULL){
+		perror("Error opening file");
+		exit(1);
+	}
+
 	movie_header = maloc(sizeof(char) * 180);
 
 	fgets( movie_header, 80, movie_file);
 
 	readMovies();
+
+	return 0;
 }
 
 
@@ -53,4 +71,15 @@ int init(char * file_path)
 char * getHeader()
 {
 	return char_header
+}
+
+char * searchMovies( char * movie_query, char * answer){
+	for(int i, i < movie_count){
+		if (strncmp(movie_query, movie_list[i], strlen(movie_query))){
+			fprintf(answer, movie_list[i]i);
+			return answer;
+		}
+	}
+	fprintf(answer, MOVIENOTFOUND, movie_query);
+	return NULL;
 }

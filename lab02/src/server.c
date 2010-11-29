@@ -2,13 +2,51 @@
  */
 
 #include "connection.h"
+#include "movies.h"
 
 #include <stdlib.h>
 #include <stdio.h>
 #include <unistd.h>
 
+#include <string.h>
+
+// Represents one client
+int client(int connection){
+	char in_buff[MAXBUFFSIZE];
+	char out_buff[MAXBUFFSIZE];
+	int buf_size;
+
+	printf("Client %d connected\n", connection);
+
+	while(1){
+		buf_size = recv(connection, in_buff, MAXBUFFSIZE-1, 0);
+
+		//Print data recived
+		printf("Client %d sent: %s\n", connection, in_buff);
+
+		//Exit if 'quit' is sent
+		if(strcmp(in_buff, "quit")){
+			printf("Client %d sent quit signal\n");
+			break;
+		}
+		//return movie data
+		searchMovies(in_buff, out_buff);
+
+		//send data
+		if(send(connetion, out_buff, strlen(out_buff), 0) == -1)
+			perror("send");
+	}
+	return 0;
+}
+
 int main(int argc, char *argv[])
 {
+
+    /*
+     * Init movies database
+    */
+    movies_init(NULL);
+
     char buf[MAXBUFFSIZE+1];
 
    /*
@@ -21,13 +59,11 @@ int main(int argc, char *argv[])
    }
 
    /*
-    * Bind a name to the socket.  Since the server will bind with
-    * any client, the machine address is zero or INADDR_ANY.  The port
-    * has to be the same as the client uses.
+    * Bind a name to the socket.
     */
    SA_IN addr;
    addr.sin_family = AF_INET;
-   addr.sin_port = htons(PORT_NUM);
+   addr.sin_port = htons(PORT);
    addr.sin_addr.s_addr = htonl(INADDR_ANY);
 
    if (bind(sock, (SA *)&addr, sizeof(SA_IN)) < 0) {  
@@ -43,44 +79,27 @@ int main(int argc, char *argv[])
       exit(-1);
    }
 
-   /*
-    * Wait for a client to connect.  When this happens, print out a 
-    * message including the address of the client.  Note that clientsock
-    * is a socket just like sock, except that it is specifically connected
-    * to the client.  sock is used just to get connections.
-    */
-   socklen_t addrsize = sizeof(SA_IN); 
-   int clientsock = accept(sock, (SA *)&addr, &addrsize);
-   if (clientsock < 0) {  
-      perror("on accept");
-      exit(-1);
-   }
-   printf(" --> connection made with client %s\n", inet_ntoa(addr.sin_addr));
 
-   /*
-    * Print messages from client. Note that the messages are processed
-    * one character at a time due to the nature of stream communication.
-    * There is no end-of-message type of character, and part of a message
-    * could arrive, or serveral messages could arrive together.  Therefore
-    * look for the null character ('\0'), which the client has to send.
-    */
-   int mlen;
-   while (mlen = recv(clientsock, buf, MAXBUFFSIZE, 0)) {
-       for (int c = 0; c < mlen; ++c) {
-	   if (buf[c] == '\0') {
-	       putchar('\n');
-	   } else {
-	       putchar(buf[c]);
+   printf("Server Initilized, waiting...\n");
+   // Enter inf loop
+   while(1){
+	   /*
+	    * Wait for a client to connect.
+	    */
+	   socklen_t addrsize = sizeof(SA_IN); 
+	   int clientsock = accept(sock, (SA *)&addr, &addrsize);
+	   if (clientsock < 0) {  
+	      perror("on accept");
+	      exit(-1);
 	   }
-       }
-   }
-   printf(" --> all messages read - connection being closed\n");
+	   printf(" --> connection made with client %s\n", inet_ntoa(addr.sin_addr));
 
-   /*  
-    * Shutdown the socket to insure that it is handled properly, and then
-    * close the client socket and also the server socket 
-    */
-   shutdown(clientsock, SHUT_RDWR);
-   close(clientsock);
+	   if ( fork() == 0){
+		close(sock); // close the listening socket for this client
+		client(clientsock); // start client logic
+	   }
+	   close(clientsock); // parent closes connected socket
+  }
    close(sock);
+   return 0;
 }

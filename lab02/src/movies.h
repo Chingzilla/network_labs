@@ -3,9 +3,9 @@
 #ifndef MOVIES_H
 #define MOVIES_H
 
-int init(char *);
+int movies_init(char *);
 
-char * searchMovie(char *);
+char * searchMovies(char *, char *);
 char * getHeader();
 
 #endif
