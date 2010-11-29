@@ -17,7 +17,7 @@
 FILE * movie_file;
 
 char * movie_list[MAXMOVIES];
-extern int movie_count;
+int movie_count;
 
 void readMovies(){
 	movie_count = 0;
