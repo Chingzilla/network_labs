@@ -39,7 +39,7 @@ int init(char * file_path)
 		movie_file = file_path;
 	}
 
-	movie_file = fopen(&move_file, "r");
+	movie_file = fopen(&movie_file, "r");
 	
 	movie_header = maloc(sizeof(char) * 180);
 
