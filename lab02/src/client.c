@@ -12,8 +12,6 @@
 #include <sys/socket.h>
 #include <netinet/in.h>
 
-#define MAXMOVIESIZE 128
-
 int main(int argc, char *argv[]){
     // Open socket
     int sock = socket(AF_INET, SOCK_STREAM, 0);
@@ -37,7 +35,7 @@ int main(int argc, char *argv[]){
 
     printf("Connected to %s\n", ADDRESS);
 
-    char movie_title[MAXMOVIESIZE];
+    char movie_title[MAXBUFFSIZE];
 
     while(1){
         //Get Movie name, exit if EOF is entered
@@ -54,7 +52,7 @@ int main(int argc, char *argv[]){
 	}
 
 	//Get replay
-	if ( recv(sock, movie_title, MAXMOVIESIZE - 1, 0) == -1){
+	if ( recv(sock, movie_title, MAXBUFFSIZE - 1, 0) == -1){
 		perror("recv");
 		exit(1);
 	}

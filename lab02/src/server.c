@@ -1,20 +1,15 @@
-/* ======================================================> server1.c 
- * Generic sort of server process for Unix 
- *
- * This is an extremely simple use of sockets for communication.
- * The server opens a socket and then reads messages and prints them out
- * without further ado until the client closes the socket. 
- * =====================================================================
+/* server1.c 
  */
+
+#include "connection.h"
+
 #include <stdlib.h>
 #include <stdio.h>
 #include <unistd.h>
 
-#include "network.h"
-
 int main(int argc, char *argv[])
 {
-    char buf[BUF_SIZE+1];
+    char buf[MAXBUFFSIZE+1];
 
    /*
     * Create the server (listen) socket.
@@ -70,7 +65,7 @@ int main(int argc, char *argv[])
     * look for the null character ('\0'), which the client has to send.
     */
    int mlen;
-   while (mlen = recv(clientsock, buf, BUF_SIZE, 0)) {
+   while (mlen = recv(clientsock, buf, MAXBUFFSIZE, 0)) {
        for (int c = 0; c < mlen; ++c) {
 	   if (buf[c] == '\0') {
 	       putchar('\n');
