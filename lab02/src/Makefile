@@ -2,11 +2,14 @@
 
 all:	server client
 
-server:
-	gcc -std=c99 server.c -o server
+server: movies.o
+	gcc -std=c99 server.o movies.o -o server
 
 client:
 	gcc -std=c99 client.c -o client
+
+movies.o: movies.c
+	gcc -std=c99 -c movies.c
 
 clean:
 	rm -f *.h.gch

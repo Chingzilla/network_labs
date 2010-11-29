@@ -5,6 +5,11 @@
 #ifndef CONNECTION_C
 #define CONNECTION_C
 
+#include <sys/types.h>
+#include <sys/socket.h>
+#include <netinet/in.h>
+#include <arpa/inet.h>
+
 #define PORT "55555"
 #define ADDRESS "127.0.0.1"
 

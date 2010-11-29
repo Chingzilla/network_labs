@@ -19,7 +19,7 @@ int client(int connection){
 	printf("Client %d connected\n", connection);
 
 	while(1){
-		buf_size = recv(connection, in_buff, MAXBUFFSIZE-1, 0);
+		buf_size = read(connection, in_buff, MAXBUFFSIZE-1);
 
 		//Print data recived
 		printf("Client %d sent: %s\n", connection, in_buff);
@@ -33,7 +33,7 @@ int client(int connection){
 		searchMovies(in_buff, out_buff);
 
 		//send data
-		if(send(connetion, out_buff, strlen(out_buff), 0) == -1)
+		if(write(connection, out_buff, strlen(out_buff)) == -1)
 			perror("send");
 	}
 	return 0;

@@ -3,8 +3,10 @@
  */
 
 #include <stdio.h>
-#include <stlib.h>
+#include <stdlib.h>
 #include <string.h>
+
+#include "movies.h"
 
 #define MOVIESFILE = "../data/movies.txt"
 #define MAXMOVIES = 100
@@ -15,13 +17,12 @@
 FILE * movie_file;
 
 char * movie_list[MAXMOVIES];
-int movie_count;
+extern int movie_count;
 
-void readMovies()
-{
+void readMovies(){
 	movie_count = 0;
 
-	for(int i, i < MAXMOVIES){
+	for(int i; i < MAXMOVIES; i++){
 		//check if at EOF
 		if(feof(movie_file)){
 			break;
@@ -35,7 +36,7 @@ void readMovies()
 		movie_count++;
 	}
 
-	fclose(movie_file)
+	fclose(movie_file);
 	return;
 }
 
@@ -74,7 +75,7 @@ char * getHeader()
 }
 
 char * searchMovies( char * movie_query, char * answer){
-	for(int i, i < movie_count){
+	for(int i; i < movie_count; i++){
 		if (strncmp(movie_query, movie_list[i], strlen(movie_query))){
 			fprintf(answer, movie_list[i]i);
 			return answer;

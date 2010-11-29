@@ -8,4 +8,4 @@ int movies_init(char *);
 char * searchMovies(char *, char *);
 char * getHeader();
 
-#endif
+#endif //MOVIES_H
