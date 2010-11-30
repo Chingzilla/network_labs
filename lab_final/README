@@ -1,0 +1,37 @@
+Lab Final Project: Slapjack Client/Server
+
+Objective:
+Create a game server and client program to play Slapjack online.
+
+Slapjack:
+In the child's card game slapjack, each player is dealt a face-down stack of cards. Players take turns playing the top card from their stack, face-up on a central pile. When someone turns up a jack, all players try to slap the pile. Whoever was first wins the pile, shuffles it, and puts it on the bottom of their stack (now face-down again). Then they start the next round by playing their top card, and it continues again. Eventually someone will run out of cards; they stop playing cards onto the pile, but have one final chance to slap a jack and thus stay in the game. If they lose that chance, they're out of the game. Whoever finishes with all the cards wins.
+
+Your Programs:
+Your assignment is to implement client and server programs to play slapjack online. Clients should be able to connect to your server, and once enough have joined, the server coordinates a game among them. The server would shuffle and "deal" the cards, and take care of responding to clients' commands and announcing what happens with the game. Commands the server should handle include:
+
+*Join the Game
+Because clients might connect/disconnect at any time, the server should queue up waiting clients while a game is going on, then when it finishes, ask all connected clients if they want to join the next game.
+*Play a Card
+If it's this clients turn, the server reveals to all players what card this client turned over. If not (or if the client's stack is empty), the server should give them an error message. You may wish to prevent players from playing a card on top of a jack, to avoid unwinnable states.
+*Slap
+Every player (who is still in the game) should be able to slap at any time. Whoever slaps on a jack first, the server should take care of announcing the winner and redistributing the cards. After a slap, one or more players may be out of the game, and possibly one player will have won. The server should handle these cases, announcing what happened and managing the game appropriately. If a client slaps on something that's not a jack, the server should give an error message.
+*Leave the Game
+Clients may wish to leave the game, but stay on the server for the next game.
+*Quit the Server
+They may also wish to quit entirely.
+It would probably be best to leave the tracking of which cards are in which piles to the server, and just send messages to the clients to tell them what they're seeing. The server will have to respond to many types of events, not only commands from all the connected clients, but clients connecting and disconnecting at any point in the game. The client will also have to be able to respond to the user inputting commands, and messages coming from the server, which may happen at any time and in any order. Previous labs have shown you several techniques you could use to handle this, such as forking multiple processes and using poll. You're free to use whichever techniques you like, or others that haven't been covered if you're comfortable with them (like threads, pipes, select, or asynchronous i/o).
+
+Server Discovery:
+Many "enabling protocols" for IP involve hosts using broadcast messages to discover the existence of other hosts, particularly servers. Similarly, your clients should be able to automatically detect your slapjack server in order to connect to it without knowing its IP address. To do this, on startup, your clients should send UDP broadcast datagrams to your pre-arranged "well-known" port number. Your server keeps a UDP socket waiting to respond to these messages. When the client gets a response, it can use that to learn the IP address of the server and initate a TCP connection with it for the rest of the game functionality.
+
+UDP broadcasting is described in Chapter 20 of the UNP book. Essentially, you must first create the socket and make it broadcastable by setting the broadcast flag with setsockopt, with level SOL_SOCKET and optname SO_BROADCAST. Then that socket will be able to send to the broadcast address for your network (which you found in the previous lab). All UDP sockets on the network that have been bound to that port and to INADDR_ANY will receive broadcast datagrams.
+
+Because broadcast packets will propagate to all machines in the lab, you should choose a new port number, definitely not 55555.
+
+Bonus Points:
+Bonus points will be awarded to students whose programs can provide interesting and useful functionalities beyond what's described here. For example, the server might be able to run multiple games at the same time for different clients, or play a more advanced version of the game with more commands, or use your imagination and come up with something surprising.
+
+Grading
+
+Basic   30 points
+Bonus   up to 10 points
