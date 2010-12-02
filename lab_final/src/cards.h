@@ -23,28 +23,29 @@
  * card_value%card_name returns card value
  * card_value/card_suit returns card's suit
  */
-typedef struct{
+typedef struct card{
     int face_value;
-    card * next_card;
+    char string[10];
+    struct card * next_card;
 } card;
 
-typedef struct{
+typedef struct carddeck{
     card * top_card;
     card * bottom_card;
     int    total_cards;
 } carddeck;
 
 // Returns a string recentation of that card
-char * cardToString(char *, int);
+char * cardToString(card *);
 
-char * deckToString(char *, int);
+char * deckToString(char *, carddeck);
 
-bool   isJack(int);
+int    isJack(int);
 
 // Shuffles that given deck
 carddeck * shuffle(carddeck *);
 
 // Returns the number of cards in a deck
-int countCards(carddeck);
+int countCards(carddeck *);
 
 #endif

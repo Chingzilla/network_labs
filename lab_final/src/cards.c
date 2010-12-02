@@ -7,26 +7,27 @@
 
 #include <stdlib.h>
 
-int countCards(carddeck deck){
+int countCards(carddeck * deck){
     int count = 0;
-    card current_card = deck.top_card;
+    card * current_card = (*deck).top_card;
 
     while(current_card != NULL){
         count++;
-        current_card = current_card.next_card;
+        current_card = (*current_card).next_card;
     }
 
+    (*deck).total_cards = count;
     return count;
 }
 
-char * cardToString(char * out_string, int card_num){
+char * cardToString(card * c){
     int card_value;
     int card_suit;
-    char * value[5];
-    char * suit[5];
+    char * value;
+    char * suit;
 
     //Get card's vaule
-    card_value = (card_num / 13) + 1;
+    card_value = ((*c).face_value / 13) + 1;
 
     switch(card_value){
     case JACK:
@@ -34,7 +35,7 @@ char * cardToString(char * out_string, int card_num){
          break;
 
     case QUEEN:
-         vaule = "Q";
+         value = "Q";
          break;
 
     case KING:
@@ -48,7 +49,7 @@ char * cardToString(char * out_string, int card_num){
          
 
     //Get card's suit
-    card_suit = card_num % 4;
+    card_suit = (*c).face_value % 4;
 
     switch(card_suit){
     case SPADES:
@@ -67,8 +68,28 @@ char * cardToString(char * out_string, int card_num){
          suit = "NULL";
     }
 
-    sprintf("%s%s", value, suit);
-    return value;
+    sprintf((*c).string, "%s%s", value, suit);
+    return (*c).string;
+}
+
+char * deckToString(char * out_string, carddeck deck){
+    card current_card = &deck.top_card;
+    char card_string[10];
+
+    out_string = "";
+    int i;
+    for(i = 0; i < deck_size; i++){
+        strcat(out_string, card_string.string);
+        strcat(out_string, " ");
+
+        //Get next card
+        if(current_card == NULL){
+            break;
+        }
+
+        current_card = *(current_card.next_card);
+    }
+    return out_string;
 }
 
 
