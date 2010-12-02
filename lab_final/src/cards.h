@@ -25,27 +25,28 @@
  */
 typedef struct card{
     int face_value;
-    char string[10];
+    char * string;
     struct card * next_card;
 } card;
+
+//Class card methods
+char * cardToString(card *);
+card * cardInit(card *, int);
 
 typedef struct carddeck{
     card * top_card;
     card * bottom_card;
     int    total_cards;
+    char *  string;
 } carddeck;
 
-// Returns a string recentation of that card
-char * cardToString(card *);
+//Class deck methods
+char * deckToString(carddeck *);
+carddeck * deckInit(carddeck *);
+carddeck * deckAddCard(carddeck *, card *);
+carddeck * deckShuffle(carddeck *);
 
-char * deckToString(char *, carddeck);
-
+// Misc methods
 int    isJack(int);
-
-// Shuffles that given deck
-carddeck * shuffle(carddeck *);
-
-// Returns the number of cards in a deck
-int countCards(carddeck *);
 
 #endif

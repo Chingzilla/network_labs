@@ -7,27 +7,28 @@
 
 #include <stdlib.h>
 
-int countCards(carddeck * deck){
-    int count = 0;
-    card * current_card = (*deck).top_card;
+#define SELF (* self)
 
-    while(current_card != NULL){
-        count++;
-        current_card = (*current_card).next_card;
+/************************
+ * Class card           *
+ ************************/
+card * cardInit(card * self, int face_value){
+    if(self == NULL){
+        self = malloc(sizeof(self));
     }
-
-    (*deck).total_cards = count;
-    return count;
+    SELF.face_value = face_value;
+    SELF.next_card = NULL;
+    cardToString(self);
 }
 
-char * cardToString(card * c){
+char * cardToString(card * self){
     int card_value;
     int card_suit;
     char * value;
     char * suit;
 
     //Get card's vaule
-    card_value = ((*c).face_value / 13) + 1;
+    card_value = (SELF.face_value / 13) + 1;
 
     switch(card_value){
     case JACK:
@@ -49,7 +50,7 @@ char * cardToString(card * c){
          
 
     //Get card's suit
-    card_suit = (*c).face_value % 4;
+    card_suit = SELF.face_value % 4;
 
     switch(card_suit){
     case SPADES:
@@ -68,28 +69,41 @@ char * cardToString(card * c){
          suit = "NULL";
     }
 
-    sprintf((*c).string, "%s%s", value, suit);
-    return (*c).string;
+    sprintf(SELF.string, "%s%s", value, suit);
+    return SELF.string;
 }
 
-char * deckToString(char * out_string, carddeck deck){
-    card current_card = &deck.top_card;
-    char card_string[10];
+/*********************
+ * Class carddeck    *
+ *********************/
+carddeck * deckInit(carddeck * self){
+    if(self == NULL){
+        self = malloc(sizeof(self));
+    }
+    SELF.top_card = NULL;
+    SELF.bottom_card = NULL;
+    SELF.total_cards = 0;
+    SELF.string = (char *)malloc(sizeof(char) * 80);
+}
 
-    out_string = "";
+char * deckToString(carddeck * self){
+    card current_card;
+    current_card = * SELF.top_card;
+
+    SELF.string = "";
     int i;
-    for(i = 0; i < deck_size; i++){
-        strcat(out_string, card_string.string);
-        strcat(out_string, " ");
+    for(i = 0; i < SELF.total_cards; i++){
+        strcat(SELF.string, current_card.string);
+        strcat(SELF.string, " ");
 
         //Get next card
-        if(current_card == NULL){
+        if(current_card.next_card == NULL){
             break;
         }
 
         current_card = *(current_card.next_card);
     }
-    return out_string;
+    return SELF.string;
 }
 
 
