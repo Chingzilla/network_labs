@@ -81,14 +81,48 @@ carddeck * deckInit(carddeck * self){
     SELF.top_card = NULL;
     SELF.bottom_card = NULL;
     SELF.total_cards = 0;
-    SELF.string = (char *)malloc(sizeof(char) * 80);
+    strcpy(SELF.string, "");
+}
+
+carddeck * deckAddCard(carddeck * self, card * new_card){
+    //If empty deck, start a new one
+    if(SELF.top_card = NULL){
+        SELF.top_card = new_card;
+        SELF.bottom_card = new_card;
+        SELF.total_cards = 1;
+    }
+    //If deck has cards it in, add to bottom and recount
+    SELF.bottom_card = new_card;
+    SELF.total_cards++;
+
+    card temp_card = *SELF.bottom_card;
+    while(temp_card.next_card != NULL){
+        SELF.total_cards++;
+        temp_card = *(temp_card.next_card);
+    }
+
+    //Update string
+    deckToString(self);
+
+    return self;
+}
+
+card * deckPopCard(carddeck * self){
+    card * this_card;
+    this_card = SELF.top_card;
+
+    SELF.top_card = (*SELF.top_card).next_card;
+
+    SELF.total_cards--;
+
+    return this_card;
 }
 
 char * deckToString(carddeck * self){
     card current_card;
     current_card = * SELF.top_card;
 
-    SELF.string = "";
+    SELF.string[0] = '\0';
     int i;
     for(i = 0; i < SELF.total_cards; i++){
         strcat(SELF.string, current_card.string);
