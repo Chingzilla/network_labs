@@ -6,6 +6,8 @@
 #include "cards.h"
 
 #include <stdlib.h>
+#include <string.h>
+#include <stdio.h>
 
 #define SELF (* self)
 
@@ -22,54 +24,50 @@ card * cardInit(card * self, int face_value){
 }
 
 char * cardToString(card * self){
-    int card_value;
-    int card_suit;
-    char * value;
-    char * suit;
-
     //Get card's vaule
+    int card_value;
     card_value = (SELF.face_value / 13) + 1;
 
     switch(card_value){
     case JACK:
-         value = "J";
+         strcpy(SELF.string, "J");
          break;
 
     case QUEEN:
-         value = "Q";
+         strcpy(SELF.string, "Q");
          break;
 
     case KING:
-         value = "K";
+         strcpy(SELF.string, "K");
          break;
 
     default:
-         itoa(card_value, value, 10);
+         sprintf(SELF.string, "%d", card_value);
          break;
     }
          
 
     //Get card's suit
+    int card_suit;
     card_suit = SELF.face_value % 4;
 
     switch(card_suit){
     case SPADES:
-         suit = "S";
+         strcat(SELF.string, "S");
          break;
     case HEARTS:
-         suit = "H";
+         strcat(SELF.string, "H");
          break;
     case DIAMONDS:
-         suit = "D";
+         strcat(SELF.string, "D");
          break;
     case CLUBS:
-         suit = "C";
+         strcat(SELF.string, "C");
          break;
     default:
-         suit = "NULL";
+         strcat(SELF.string, "#");
     }
 
-    sprintf(SELF.string, "%s%s", value, suit);
     return SELF.string;
 }
 

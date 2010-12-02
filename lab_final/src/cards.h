@@ -25,7 +25,7 @@
  */
 typedef struct card{
     int face_value;
-    char * string;
+    char string[4];
     struct card * next_card;
 } card;
 
@@ -37,13 +37,14 @@ typedef struct carddeck{
     card * top_card;
     card * bottom_card;
     int    total_cards;
-    char *  string;
+    char string[80];
 } carddeck;
 
 //Class deck methods
 char * deckToString(carddeck *);
 carddeck * deckInit(carddeck *);
 carddeck * deckAddCard(carddeck *, card *);
+card *     deckPopCard(carddeck *);
 carddeck * deckShuffle(carddeck *);
 
 // Misc methods
