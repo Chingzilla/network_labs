@@ -1,5 +1,5 @@
 /*
- * src/cards.h
+ * src/game/cards.h
  * Chris Ching
  */
 
