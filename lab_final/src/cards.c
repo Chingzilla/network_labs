@@ -118,6 +118,44 @@ card * deckPopCard(carddeck * self){
     return this_card;
 }
 
+carddeck * deckShuffle(carddeck *){
+    //Build array of cards
+    card * cards[SELF.total_cards];
+
+    int i;
+    card * temp_card = SELF.top_card;
+    for(i = 0; i < SELF.total_cards; i++){
+        cards[i] = temp_card;
+        temp_card = (*temp_card).next_card;
+    }
+    
+    //Shuffle deck 52 times
+    int card_1;
+    int card_2;
+
+    for(i = 0; i < 52; i++){
+        card_1 = rand() % SELF.total_cards;
+        card_2 = rand() % SELF.total_cards;
+        
+        if( card_1 != card_2){
+            temp_card = cards[card_1];
+            cards[card_1] = cards[card_2];
+            cards[card_2] = cards[card_1];
+        }
+    }
+
+    //Fix list's links
+    
+    SELF.top_card = cards[0];
+    for(i = 0; i < (SELF.total_cards - 1); i++){
+        (*cards[i]).next_card = cards[i+1];
+    }
+    SELF.bottom_card = cards[SELF.total_cards];
+    (*SELF.bottom_card).next_card = NULL;
+
+    return self;
+}
+
 char * deckToString(carddeck * self){
     card current_card;
     current_card = * SELF.top_card;
