@@ -29,6 +29,10 @@ char * cardToString(card * self){
     card_value = (SELF.face_value / 13) + 1;
 
     switch(card_value){
+    case ACE:
+         strcpy(SELF.string, "A");
+         break;
+
     case JACK:
          strcpy(SELF.string, "J");
          break;

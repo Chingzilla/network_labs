@@ -14,6 +14,7 @@
 #define DIAMONDS 2
 #define CLUBS    3
 
+#define ACE      1
 #define JACK     11
 #define QUEEN    12
 #define KING     13
