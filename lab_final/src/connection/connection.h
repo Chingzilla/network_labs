@@ -24,7 +24,11 @@ void *get_in_addr(struct sockaddr *sa);
 
 int setup_connection(int * sockfd,
                      int portnum,
-                     struct addrinfo hints;
-                     struct addrinfo * p){
+                     char * ip_addr,
+                     struct addrinfo hints,
+                     struct addrinfo * p);
+
+int Send(int sockfd, char * msg);
+int SendTo(int sockfd, char * msg, struct addrinfo dest_addr);
 
 #endif //_CONNECTION_H

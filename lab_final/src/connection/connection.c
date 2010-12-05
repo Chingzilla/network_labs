@@ -13,13 +13,14 @@ void *get_in_addr(struct sockaddr *sa)
 
 int setup_connection(int * sockfd,
                      int portnum,
-                     struct addrinfo hints;
+                     char * ip_addr, //set to NULL for localhost
+                     struct addrinfo hints,
                      struct addrinfo * p){
 
     struct addrinfo *servinfo;
     int rv;
 
-    if ((rv = getaddrinfo(NULL, MYPORT, &hints, &servinfo)) != 0) {
+    if ((rv = getaddrinfo(ip_addr, MYPORT, &hints, &servinfo)) != 0) {
         fprintf(stderr, "getaddrinfo: %s\n", gai_strerror(rv));
         return 1;
     }
