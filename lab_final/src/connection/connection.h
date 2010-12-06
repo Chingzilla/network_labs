@@ -17,6 +17,8 @@
 #define MAXBUF 128
 #define AF_INET_TYPE AF_INET
 
+#define BACKLOG 10
+
 #include <sys/types.h>
 #include <sys/socket.h>
 #include <netinet/in.h>
@@ -32,5 +34,7 @@ int setup_connection(int * sockfd, char * portnum, char * ip_addr,
 
 int Send(int sockfd, char * msg);
 int SendTo(int sockfd, char * msg, struct addrinfo dest_addr);
+
+void sigchld_handler(int s);
 
 #endif //_CONNECTION_H

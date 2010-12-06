@@ -15,7 +15,9 @@ void *get_in_addr(struct sockaddr *sa)
     return &(((struct sockaddr_in6*)sa)->sin6_addr);
 }
 
-
+void sigchld_handler(int s){
+    while(waitpid(-1, NULL, WNOHANG) > 0);
+}
 
 int setup_connection(int * sockfd,
                      char * portnum,

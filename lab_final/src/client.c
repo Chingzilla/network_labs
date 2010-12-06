@@ -65,7 +65,66 @@ int getServerIP(struct sockaddr_storage * server_addr){
     printf("Server IP: %s\n", s);
 
     close(sockfd);
-    
+}
+
+int connectToServer(int * sockfd, struct sockaddr_storage server_addr){
+    int numbytes;  
+    char buf[MAXBUF];
+    struct addrinfo hints, *servinfo, *p;
+    int rv;
+    char s[INET6_ADDRSTRLEN];
+
+    memset(&hints, 0, sizeof hints);
+    hints.ai_family = AF_INET;
+    hints.ai_socktype = SOCK_STREAM;
+
+    inet_ntop(server_addr.ss_family,
+        get_in_addr((struct sockaddr *) &server_addr),
+        s, sizeof s);
+
+    if ((rv = getaddrinfo(s, GAMEPORT_STR, &hints, &servinfo)) != 0) {
+        fprintf(stderr, "getaddrinfo: %s\n", gai_strerror(rv));
+        return 1;
+    }
+
+    // loop through all the results and connect to the first we can
+    for(p = servinfo; p != NULL; p = p->ai_next) {
+        if ((*sockfd = socket(p->ai_family, p->ai_socktype,
+                p->ai_protocol)) == -1) {
+            perror("client: socket");
+            continue;
+        }
+
+        if (connect(*sockfd, p->ai_addr, p->ai_addrlen) == -1) {
+            close(*sockfd);
+            perror("client: connect");
+            continue;
+        }
+
+        break;
+    }
+
+    if (p == NULL) {
+        fprintf(stderr, "client: failed to connect\n");
+        return 2;
+    }
+
+    inet_ntop(p->ai_family, get_in_addr((struct sockaddr *)p->ai_addr),
+            s, sizeof s);
+    printf("client: connecting to %s\n", s);
+
+    freeaddrinfo(servinfo); // all done with this structure
+
+    if ((numbytes = recv(*sockfd, buf, MAXBUF-1, 0)) == -1) {
+        perror("recv");
+        exit(1);
+    }
+
+    buf[numbytes] = '\0';
+
+    printf("client: received '%s'\n",buf);
+
+    return 0;    
 }
 
 // Returns the socket number
@@ -75,6 +134,8 @@ int getServer(){
     
     getServerIP(&server_addr);   
  
+    connectToServer(&sockfd, server_addr);
+
     return sockfd;
 }
 
@@ -84,56 +145,4 @@ int main(int argc, char *argv[]){
     int sockfd;
 
     sockfd = getServer();
-//    int sockfd;
-//    struct sockaddr_in server_addr;
-//    struct hostend *he;
-//    
-//    int numbytes;
-//    int broadcast = 1;
-//
-//    if ((sockfd = socket(AF_INET, SOCK_DGRAM, 0)) == -1){
-//        perror("socket");
-//        exit(1);
-//    }
-//
-//    if (setsockopt(sockfd, SOL_SOCKET, SO_BROADCAST, &broadcast,
-//            sizeof broadcast) == -1)
-//    {
-//        perror("setsock (SO_BROADCAST)");
-//        exit(1);
-//    }
-//
-//    if ((he=(struct hostend *)gethostbyname("255.255.255.255")) == NULL){
-//       perror("gethostbyname");
-//       exit(1);
-//    }
-//
-//    server_addr.sin_family = AF_INET;
-//    server_addr.sin_port = htons(BROADCASTPORT);
-//    inet_aton("255.255.255.255", &server_addr.sin_addr);
-//    memset(server_addr.sin_zero, '\0', sizeof(server_addr.sin_zero));
-//    
-//
-//    //request server ip
-//    if ((numbytes=sendto(sockfd, REQUESTMSG, strlen(REQUESTMSG), 0,
-//            (struct sockaddr *) &server_addr, sizeof server_addr)) == -1){
-//        perror("sendto");
-//        exit(1);
-//    }
-//    
-//    //get server ip
-//    addr_len = sizeof their_addr;
-//    if ((numbytes = recvfrom(sockfd, buf, MAXBUFLEN-1 , 0,
-//        (struct sockaddr *)&their_addr, &addr_len)) == -1) {
-//        perror("recvfrom");
-//        exit(1);
-//    }
-//
-//    printf("listener: got packet from %s\n",
-//        inet_ntop(their_addr.ss_family,
-//            get_in_addr((struct sockaddr *)&their_addr),
-//            s, sizeof s));
-//    printf("listener: packet is %d bytes long\n", numbytes);
-//    buf[numbytes] = '\0';
-//    printf("listener: packet contains \"%s\"\n", buf);
 }
