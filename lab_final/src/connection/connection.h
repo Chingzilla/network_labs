@@ -29,12 +29,31 @@
 // get sockaddr, IPv4 or IPv6:
 void *get_in_addr(struct sockaddr *sa);
 
-int setup_connection(int * sockfd, char * portnum, char * ip_addr,
-                     struct addrinfo hints, struct addrinfo * p);
-
-int Send(int sockfd, char * msg);
-int SendTo(int sockfd, char * msg, struct addrinfo dest_addr);
-
 void sigchld_handler(int s);
+
+//Protical Stuff
+#define INPUTTYPE_CHAR 1
+#define INPUTTYPE_STR  2
+#define INPUTTYPE_NONE 3
+#define INPUTTYPE_WAIT 4
+
+typedef struct GameProt {
+    //curses position
+    int x;
+    int y;
+
+    //Input Type;
+    int input_type;
+
+    //String to output;
+    char msg[MAXBUF];
+
+    //Raw String from socket
+    char raw_str[MAXBUF];
+} GameProt;
+
+int parseGameProt(struct GameProt *);
+
+int buildGameProt(struct GameProt *);
 
 #endif //_CONNECTION_H

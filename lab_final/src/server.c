@@ -4,6 +4,7 @@
  */
 
 #include "connection/connection.h"
+#include "game/game.h"
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -168,16 +169,25 @@ int acceptConnections(){
         inet_ntop(their_addr.ss_family,
             get_in_addr((struct sockaddr *)&their_addr),
             s, sizeof s);
-        printf("acceptConnections: got connection from %s\n", s);
+        printf("acceptConnections: %s connected\n", s);
 
         if (!fork()) { // this is the child process
             close(sockfd); // child doesn't need the listener
-            if (send(new_fd, "Hello, world!", 13, 0) == -1)
+            if (send(new_fd, "4:1:0:Hello, world!", 19, 0) == -1)
                 perror("send");
             close(new_fd);
             exit(0);
         }
-        close(new_fd);  // parent doesn't need this
+        sleep(1);
+        if (!fork()) { // this is the child process
+            close(sockfd); // child doesn't need the listener
+            if (send(new_fd, "4:3:0:2nd line", 19, 0) == -1)
+                perror("send");
+            close(new_fd);
+            exit(0);
+        }
+        //printf("Closeing socket %d\n", new_fd);
+        //close(new_fd);  // parent doesn't need this
     }    
     
     return 0;

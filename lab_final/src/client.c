@@ -3,12 +3,16 @@
  */
 
 #include "connection/connection.h"
+#include "class.h"
 
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
 #include <errno.h>
 #include <string.h>
+
+#include <curses.h>
+
 
 int getServerIP(struct sockaddr_storage * server_addr){
     int sockfd;
@@ -67,10 +71,10 @@ int getServerIP(struct sockaddr_storage * server_addr){
     close(sockfd);
 }
 
-int connectToServer(int * sockfd, struct sockaddr_storage server_addr){
+int connectToServer(int * sockfd, struct sockaddr_storage server_addr, struct addrinfo *p){
     int numbytes;  
     char buf[MAXBUF];
-    struct addrinfo hints, *servinfo, *p;
+    struct addrinfo hints, *servinfo;
     int rv;
     char s[INET6_ADDRSTRLEN];
 
@@ -113,32 +117,98 @@ int connectToServer(int * sockfd, struct sockaddr_storage server_addr){
             s, sizeof s);
     printf("client: connecting to %s\n", s);
 
-    freeaddrinfo(servinfo); // all done with this structure
-
-    if ((numbytes = recv(*sockfd, buf, MAXBUF-1, 0)) == -1) {
-        perror("recv");
-        exit(1);
-    }
-
-    buf[numbytes] = '\0';
-
-    printf("client: received '%s'\n",buf);
-
     return 0;    
 }
 
 // Returns the socket number
 int getServer(){
     int sockfd = 0;
+
+    struct addrinfo p;
     struct sockaddr_storage server_addr;
     
     getServerIP(&server_addr);   
  
-    connectToServer(&sockfd, server_addr);
+    connectToServer(&sockfd, server_addr, &p);
 
-    return sockfd;
+    gameTerm(sockfd);
+    return 0;
 }
 
+//Creates a dump terminal
+int gameTerm(int sockfd){
+    int numbytes;
+
+    GameProt * self;
+    char return_msg[MAXBUF];
+
+    //setup curses
+    initscr();
+    
+    /**********Client Output*************
+     Slapjack Client:
+     Game {num}
+     player1 player2 [player3] player4
+     Deck: {num cards in deck}
+     {Msgs}
+     input:{input prompt}
+     ************************************/
+
+    mvprintw(0, 0, "************ Slapjack Client ************");
+    mvprintw(6, 0, "*****************************************");
+
+    while((numbytes = recv(sockfd, SELF.raw_str, MAXBUF-1, 0)) > 0){
+        //ensure that string is properly ended
+        SELF.raw_str[numbytes] = '\0';
+        
+        if (parseGameProt(self) != 0){
+            printf("gameTerm: invalid command: %s\n", SELF.raw_str);
+            break;
+        }
+        
+        mvprintw(SELF.y, SELF.x, SELF.msg);
+
+        mvprintw(5, 0, "input:                 ");
+        move(5, 7);
+
+        switch(SELF.input_type){
+            case INPUTTYPE_NONE:
+                continue;
+
+            case INPUTTYPE_WAIT:
+                printw("<waiting>");
+                continue;
+
+            case INPUTTYPE_CHAR:
+                printw("<press key>");
+                noecho();
+                return_msg[0] = getch();
+                return_msg[1] = '\0';
+                break;
+
+            case INPUTTYPE_STR:
+                echo();
+                scanw("%s", return_msg);
+                break;
+
+            default:
+                mvprintw(3, 0, "ERROR: invalid input type");
+                continue;
+        }
+
+        //Send reply
+        if(send(sockfd, return_msg, strlen(return_msg), 0) == -1){
+            perror("send");
+            break;
+        }
+    }
+
+    //Restore Terminal settings
+    endwin();
+
+    perror("recv");
+    exit(1);
+}
 
 int main(int argc, char *argv[]){
 

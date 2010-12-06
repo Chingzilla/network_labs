@@ -7,7 +7,7 @@ server: client.c connection.o
 	gcc -o server server.c connection.o
 
 client: client.c connection.o
-	gcc -o client client.c connection.o
+	gcc -o client client.c connection.o -lcurses
 
 connection.o:
 	gcc -c connection/connection.c
