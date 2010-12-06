@@ -3,11 +3,14 @@
 
 all: server client
 
-server: client.c
-	gcc -std=c99 -o server server.c
+server: client.c connection.o
+	gcc -o server server.c connection.o
 
-client: client.c
-	gcc -std=c99 -o client client.c
+client: client.c connection.o
+	gcc -o client client.c connection.o
+
+connection.o:
+	gcc -c connection/connection.c
 
 clean:
 	rm *.o
