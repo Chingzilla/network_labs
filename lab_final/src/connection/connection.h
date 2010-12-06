@@ -25,6 +25,9 @@
 #include <netinet/tcp.h>
 #include <arpa/inet.h>
 #include <netdb.h>
+#include <sys/poll.h>
+
+#include "../game/game.h"
 
 // get sockaddr, IPv4 or IPv6:
 void *get_in_addr(struct sockaddr *sa);
@@ -52,8 +55,14 @@ typedef struct GameProt {
     char raw_str[MAXBUF];
 } GameProt;
 
+int gameProtInit(struct GameProt *, int input_type, int y, int x, char *);
+
 int parseGameProt(struct GameProt *);
 
 int buildGameProt(struct GameProt *);
+
+int sendMsg(struct GameProt *, int sockfd);
+
+int recvMsg(struct GameProt *, int sockfd, int timeout);
 
 #endif //_CONNECTION_H

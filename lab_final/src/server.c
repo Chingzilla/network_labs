@@ -173,21 +173,15 @@ int acceptConnections(){
 
         if (!fork()) { // this is the child process
             close(sockfd); // child doesn't need the listener
-            if (send(new_fd, "4:1:0:Hello, world!", 19, 0) == -1)
-                perror("send");
-            close(new_fd);
-            exit(0);
-        }
-        sleep(1);
-        if (!fork()) { // this is the child process
-            close(sockfd); // child doesn't need the listener
-            if (send(new_fd, "4:3:0:2nd line", 19, 0) == -1)
-                perror("send");
+            
+            //Add player to lobby
+            playerInit(new_fd);
+            
             close(new_fd);
             exit(0);
         }
         //printf("Closeing socket %d\n", new_fd);
-        //close(new_fd);  // parent doesn't need this
+        close(new_fd);  // parent doesn't need this
     }    
     
     return 0;

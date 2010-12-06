@@ -4,6 +4,7 @@
 
 #include "connection/connection.h"
 #include "class.h"
+#include "game/game.h"
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -144,7 +145,8 @@ int gameTerm(int sockfd){
 
     //setup curses
     initscr();
-    
+    cbreak();
+
     /**********Client Output*************
      Slapjack Client:
      Game {num}
@@ -157,7 +159,7 @@ int gameTerm(int sockfd){
     mvprintw(0, 0, "************ Slapjack Client ************");
     mvprintw(6, 0, "*****************************************");
 
-    while((numbytes = recv(sockfd, SELF.raw_str, MAXBUF-1, 0)) > 0){
+    while(recvMsg(self, sockfd, -1) > 0){
         //ensure that string is properly ended
         SELF.raw_str[numbytes] = '\0';
         
@@ -203,10 +205,11 @@ int gameTerm(int sockfd){
         }
     }
 
+    getch();
     //Restore Terminal settings
     endwin();
 
-    perror("recv");
+    perror("recv/send");
     exit(1);
 }
 
