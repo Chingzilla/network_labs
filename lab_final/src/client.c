@@ -138,7 +138,6 @@ int getServer(){
 
 //Creates a dump terminal
 int gameTerm(int sockfd){
-    int numbytes;
 
     GameProt * self;
     char return_msg[MAXBUF];
@@ -153,15 +152,14 @@ int gameTerm(int sockfd){
      player1 player2 [player3] player4
      Deck: {num cards in deck}
      {Msgs}
-     input:{input prompt}
+     input:{input prompt};
      ************************************/
 
     mvprintw(0, 0, "************ Slapjack Client ************");
     mvprintw(6, 0, "*****************************************");
 
-    while(recvMsg(self, sockfd, -1) > 0){
-        //ensure that string is properly ended
-        SELF.raw_str[numbytes] = '\0';
+    while(1){
+        recvMsg(self, sockfd, -1);
         
         if (parseGameProt(self) != 0){
             printf("gameTerm: invalid command: %s\n", SELF.raw_str);
@@ -201,7 +199,7 @@ int gameTerm(int sockfd){
         //Send reply
         if(send(sockfd, return_msg, strlen(return_msg), 0) == -1){
             perror("send");
-            break;
+            //break;
         }
     }
 

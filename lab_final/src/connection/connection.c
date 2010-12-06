@@ -97,6 +97,7 @@ int sendMsg(struct GameProt * gameP, int sockfd){
 int recvMsg(struct GameProt * gameP, int sockfd, int timeout){
 
     int rv;
+    int numbytes;
     struct pollfd ufds;
 
     ufds.fd = sockfd;
@@ -115,10 +116,13 @@ int recvMsg(struct GameProt * gameP, int sockfd, int timeout){
     }
     else{
         if (ufds.revents & POLLIN){
-            if (recv(sockfd, (*gameP).msg, MAXBUF -1, 0) == -1)
+            numbytes = recv(sockfd, (*gameP).msg, MAXBUF -1, 0);
+            if( numbytes == -1){
                 perror("recv");
-            return 0;
+                return 1;
+            }
+            (*gameP).msg[numbytes] = '\0';
         }
     }
-    return 1;
+    return 0;
 }
