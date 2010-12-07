@@ -159,59 +159,62 @@ int gameTerm(int sockfd){
     cbreak();
 
     /**********Client Output*************
-     Slapjack Client:
-     Game {num}
-     player1 player2 [player3] player4
-     Deck: {num cards in deck}
-     {Msgs}
+     <server text>
+     <game text>
      input:{input prompt};
      ************************************/
 
     mvprintw(0, 0, "************ Slapjack Client ************");
-    mvprintw(6, 0, "*****************************************");
+    mvprintw(3, 0, "*****************************************");
 
-    while((recvMsg(self, sockfd, 30000) == 0)){
-        
-        mvprintw(SELF.y, SELF.x, SELF.msg);
+    
+    //Setup polling
+    sturct pollfd io[2];
+    int nready;
+    int numbytes;
 
-        mvprintw(5, 0, "input:                 ");
-        move(5, 7);
+    char msg_in[MAXBUF];
+    char msg_out[MAXBUF];
 
-        switch(SELF.input_type){
-            case INPUTTYPE_NONE:
-                continue;
+    // io[0] == stdin
+    io[0].fd = fileno(stdin);
+    io[0].events = POLLIN;
+    // io[1] == socket
+    io[1].fd = sockfd;
+    io[1].events = POLLIN;
 
-            case INPUTTYPE_WAIT:
-                printw("<waiting>");
-                continue;
-
-            case INPUTTYPE_CHAR:
-                printw("<press key>");
-                noecho();
-                return_msg[0] = getch();
-                return_msg[1] = '\0';
-                break;
-
-            case INPUTTYPE_STR:
-                echo();
-                scanw("%s", return_msg);
-                break;
-
-            default:
-                mvprintw(3, 0, "ERROR: invalid input type");
-                continue;
+    while(1){
+        nready = poll(io, 2, -1);
+        if( nready == -1){
+            perror("poll");
         }
+        else{
+            if(io[0].revents & POLLIN){
+                fgets(msg_out, MAXBUF, stdin);
+                //Remove new line
+                msg_out[strlen(msg_out) -1] = '\0';
 
-        getch();
+                //send
+                if( send(sockfd, msg_out, strlen(msg_out), -1) == 0){
+                    //Connection closed
+                    exit(1);
+                }
+            }
 
-        //Send reply
-        if(send(sockfd, SELF.raw_str, strlen(return_msg), 0) == -1){
-            perror("send");
-            //break;
+            if(io[1].revents & POLLIN){
+                numbytes = recv(sockfd, msg_in, MAXDEF -1, 0);
+                if(numbytes == 0){
+                    //Connection closed
+                    exit(1);
+                }
+                msg_in[numbytes] = '\0';
+
+                mvprintw(1, 0, "                           ");
+                mvprintw(1, 0, msg_in);
+            }
         }
     }
 
-    getch();
     //Restore Terminal settings
     endwin();
 
