@@ -146,6 +146,16 @@ int gameTerm(int sockfd){
     printf("************ Slapjack Client ************\n");
 
     while(1){
+
+        printf("Input:");
+        scanf("%s", return_msg);
+
+        send(sockfd, return_msg, strlen(return_msg), 0);
+        recv(sockfd, return_msg, MAXBUF -1, 0);
+
+        printf("%s\n", return_msg);
+
+        continue;
         
         numbytes = recv(sockfd, SELF.raw_str, MAXBUF -1, 0);
         if(numbytes == -1){

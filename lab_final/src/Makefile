@@ -1,7 +1,7 @@
 #Makefile
 #Chris Ching
 
-all: clean server client
+all: server client
 
 server: server.c connection.o game.o
 	gcc -o server server.c connection.o game.o

@@ -174,14 +174,27 @@ int acceptConnections(){
         if (!fork()) { // this is the child process
             close(sockfd); // child doesn't need the listener
             
+            char return_msg[MAXBUF];
+
+
+            while(1){
+                printf("Input:");
+                scanf("%s", return_msg);
+
+                send(new_fd, return_msg, strlen(return_msg), 0);
+                recv(new_fd, return_msg, MAXBUF -1, 0);
+
+                printf("%s\n", return_msg);
+            }
+
             //Add player to lobby
             playerInit(new_fd);
             
             close(new_fd);
             exit(0);
         }
-        printf("Closing socket %d\n", new_fd);
-        close(new_fd);  // parent doesn't need this
+        //printf("Closeing socket %d\n", new_fd);
+        //close(new_fd);  // parent doesn't need this
     }    
     
     return 0;
