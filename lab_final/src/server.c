@@ -174,20 +174,6 @@ int acceptConnections(){
         if (!fork()) { // this is the child process
             //close(sockfd); // child doesn't need the listener
 
-            char buf[MAXBUF];
-            int numbytes;
-            GameProt * self;
-
-            while(1){
-                gameProtInit(self, INPUTTYPE_STR, 3, 0, "MSG from server");
-                sendMsg(self, new_fd);
-                numbytes = recv(new_fd, buf, MAXBUF -1, 0);
-
-                buf[numbytes] = '\0';
-                printf("%s\n", buf);
-            }
-
-
             //Add player to lobby
             playerInit(new_fd);
             

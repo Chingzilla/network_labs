@@ -21,18 +21,16 @@
 
 void playerInit(int sockfd){
     Player * self;
-    GameProt gameP;
-    
+    char buf[MAXBUF];
+
     SELF.sockfd = sockfd;
 
     //get player's name
-    gameProtInit(&gameP, INPUTTYPE_STR, 4, 0, "Enter Player Name");
-    
-    sendMsg(&gameP, SELF.sockfd);
-    recvMsg(&gameP, SELF.sockfd, -1);
+    Send(SELF.sockfd, "Enter Player Name");
+    Recv(SELF.sockfd, SELF.name);
 
-    strncpy(SELF.name, gameP.msg, sizeof SELF.name);
-
+    sprintf(buf, "Welcome %s", SELF.name);
+    Send(SELF.sockfd, buf);
 }
 
 void playerLobby(){

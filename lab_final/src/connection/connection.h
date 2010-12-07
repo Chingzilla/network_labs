@@ -14,7 +14,7 @@
 #define REQUESTMSG "REQUESTING_GAME"
 #define ACKMSG "REQUEST_RECIVED"
 
-#define MAXBUF 512
+#define MAXBUF 180
 #define AF_INET_TYPE AF_INET
 
 #define BACKLOG 10
@@ -34,35 +34,7 @@ void *get_in_addr(struct sockaddr *sa);
 
 void sigchld_handler(int s);
 
-//Protical Stuff
-#define INPUTTYPE_CHAR 1
-#define INPUTTYPE_STR  2
-#define INPUTTYPE_NONE 3
-#define INPUTTYPE_WAIT 4
-
-typedef struct GameProt {
-    //curses position
-    int x;
-    int y;
-
-    //Input Type;
-    int input_type;
-
-    //String to output;
-    char msg[MAXBUF];
-
-    //Raw String from socket
-    char raw_str[MAXBUF];
-} GameProt;
-
-int gameProtInit(struct GameProt *, int input_type, int y, int x, char *);
-
-int parseGameProt(struct GameProt *);
-
-int buildGameProt(struct GameProt *);
-
-int sendMsg(struct GameProt *, int sockfd);
-
-int recvMsg(struct GameProt *, int sockfd, int timeout);
+void Send(int, char *);
+void Recv(int, char *);
 
 #endif //_CONNECTION_H
