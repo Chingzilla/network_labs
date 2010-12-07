@@ -4,14 +4,13 @@
 
 #include "connection/connection.h"
 #include "class.h"
-#include "game/game.h"
 
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
 #include <errno.h>
 #include <string.h>
-
+#include <poll.h>
 #include <curses.h>
 
 
@@ -118,17 +117,7 @@ int connectToServer(int * sockfd, struct sockaddr_storage server_addr, struct ad
             s, sizeof s);
     printf("client: connecting to %s\n", s);
 
-    GameProt self;
-
-    while(1){
-        mvprintw(4,0, "input:");
-        gets(buf);
-        send(*sockfd, buf, strlen(buf), 0);
-        
-        recvMsg(&self, *sockfd, -1);
-        printf("%s\n", self.raw_str);
-        printf("%d, %d, %d, %s", self.input_type, self.y, self.x, self.msg);
-    }
+    gameTerm(*sockfd);
 
     return 0;    
 }
@@ -151,25 +140,8 @@ int getServer(){
 //Creates a dump terminal
 int gameTerm(int sockfd){
 
-    GameProt * self;
-    char return_msg[MAXBUF];
-
-    //setup curses
-    initscr();
-    cbreak();
-
-    /**********Client Output*************
-     <server text>
-     <game text>
-     input:{input prompt};
-     ************************************/
-
-    mvprintw(0, 0, "************ Slapjack Client ************");
-    mvprintw(3, 0, "*****************************************");
-
-    
     //Setup polling
-    sturct pollfd io[2];
+    struct pollfd io[2];
     int nready;
     int numbytes;
 
@@ -202,21 +174,17 @@ int gameTerm(int sockfd){
             }
 
             if(io[1].revents & POLLIN){
-                numbytes = recv(sockfd, msg_in, MAXDEF -1, 0);
+                numbytes = recv(sockfd, msg_in, MAXBUF -1, 0);
                 if(numbytes == 0){
                     //Connection closed
                     exit(1);
                 }
                 msg_in[numbytes] = '\0';
 
-                mvprintw(1, 0, "                           ");
-                mvprintw(1, 0, msg_in);
+                printf("%s\n", msg_in);
             }
         }
     }
-
-    //Restore Terminal settings
-    endwin();
 
     perror("recv/send");
     exit(1);
