@@ -118,6 +118,18 @@ int connectToServer(int * sockfd, struct sockaddr_storage server_addr, struct ad
             s, sizeof s);
     printf("client: connecting to %s\n", s);
 
+    GameProt self;
+
+    while(1){
+        mvprintw(4,0, "input:");
+        gets(buf);
+        send(*sockfd, buf, strlen(buf), 0);
+        
+        recvMsg(&self, *sockfd, -1);
+        printf("%s\n", self.raw_str);
+        printf("%d, %d, %d, %s", self.input_type, self.y, self.x, self.msg);
+    }
+
     return 0;    
 }
 

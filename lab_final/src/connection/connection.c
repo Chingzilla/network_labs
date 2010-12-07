@@ -38,24 +38,25 @@ int parseGameProt(struct GameProt * self){
 
     //Read input type
     current_info = strtok(s, ":");
-    if (sprintf(current_info, "%d", SELF.input_type) != 1){
-        return 1;
-    }
+    sscanf(current_info, "%d", SELF.input_type);
 
+    printf("parse: input_type: %s, %d\n", current_info, SELF.input_type);
+    
     //Read msg placement
     current_info = strtok(NULL, ":");
-    if (sprintf(current_info, "%d", SELF.y) != 1){
-        return 2;
-    }
+    sscanf(current_info, "%d", SELF.y);
+    
+    printf("parse: y: %s, %d\n", current_info, SELF.y);
 
     current_info = strtok(NULL, ":");
-    if (sprintf(current_info, "%d", SELF.x) != 1){
-        return 3;
-    }
+    sscanf(current_info, "%d", SELF.x);
+    
+    printf("parse: x: %d\n", SELF.x);
 
     //Read msg
     current_info = strtok(NULL, "\0");
     strcpy(SELF.msg, current_info);
+    printf("parse: msg: %s\n", SELF.msg);
 
     printf("%s -> %d, %d, %d, %s",SELF.raw_str, SELF.input_type, SELF.y, SELF.x, SELF.msg);
 
@@ -63,85 +64,37 @@ int parseGameProt(struct GameProt * self){
 }
 
 int buildGameProt(struct GameProt * self){
-    sprintf(SELF.raw_str, ":%d:%d:%d:%s:", SELF.input_type, SELF.y, SELF.x, SELF.msg);
+    sprintf(SELF.raw_str, ":%d:%d:%d:%s", SELF.input_type, SELF.y, SELF.x, SELF.msg);
 
     return 0;
 }
 
 int sendMsg(struct GameProt * gameP, int sockfd){
-    int rv;
-    struct pollfd ufds;
-
-    if(buildGameProt(gameP) != 0){
-        return 2;
-    }
-
-    ufds.fd = sockfd;
-    ufds.events = POLLOUT;
-
-    //try to send signial, timeout after 5 secs
-    rv = poll(&ufds, 1, 5000);
-    
-    if (rv == -1) {
-        perror("poll");
-        return rv;
-    }
-    else if (rv == 0){
-        //timed out
-        return 1;
-    }
-    else{
-        if (ufds.revents & POLLOUT){
-            printf("sendMsg: sending: %s", (*gameP).raw_str);
-            if (send(sockfd, (*gameP).raw_str, strlen((*gameP).msg), 0) == -1)
-                perror("sendMsg");
-            return 0;
-        }
-    }
-    return 1;
+    printf("sendMsg: sending: %s\n", (*gameP).raw_str);
+    if (send(sockfd, (*gameP).raw_str, strlen((*gameP).msg), 0) == -1)
+        perror("sendMsg");
+    return 0;
 }
 
 int recvMsg(struct GameProt * gameP, int sockfd, int timeout){
-
-    int rv;
     int numbytes;
-    struct pollfd ufds;
-
-    ufds.fd = sockfd;
-    ufds.events = POLLIN;
-
-    //try to recive signial
-    rv = poll(&ufds, 1, timeout);
-    
-    if (rv == -1) {
-        perror("poll");
-        return rv;
+            
+    numbytes = recv(sockfd, (*gameP).raw_str, MAXBUF -1, 0);
+    if( numbytes == 0){
+        perror("recvMsg: connection closed");
+        close(sockfd);
+        exit(0);
     }
-    else if (rv == 0){
-        //timed out
+    if( numbytes < 0){
+        perror("recvMsg");
         return 1;
     }
-    else{
-        if (ufds.revents & POLLIN){
-            numbytes = recv(sockfd, (*gameP).raw_str, MAXBUF -1, 0);
-            if( numbytes == 0){
-                perror("recvMsg: connection closed");
-                close(sockfd);
-                exit(0);
-            }
-            if( numbytes < 0){
-                perror("recvMsg");
-                return 1;
-            }
-            (*gameP).raw_str[numbytes] = '\0';
-        }
-    }
+
+    (*gameP).raw_str[numbytes] = '\0';
     printf("rescMsg: %s\n", (*gameP).raw_str);
-    
     //Parse out msg
     if( parseGameProt(gameP) !=0 ){
         return 1;
     }
-
     return 0;
 }
