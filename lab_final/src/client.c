@@ -12,9 +12,6 @@
 #include <errno.h>
 #include <string.h>
 
-#include <curses.h>
-
-
 int getServerIP(struct sockaddr_storage * server_addr){
     int sockfd;
     struct sockaddr_in their_addr; // connector's address information
@@ -132,6 +129,8 @@ int getServer(){
  
     connectToServer(&sockfd, server_addr, &p);
 
+    send(sockfd, "Testing", sizeof "Testing", 0);
+
     gameTerm(sockfd);
     return 0;
 }
@@ -142,67 +141,60 @@ int gameTerm(int sockfd){
     GameProt * self;
     char return_msg[MAXBUF];
 
-    //setup curses
-    initscr();
-    cbreak();
+    int numbytes;
 
-    /**********Client Output*************
-     Slapjack Client:
-     Game {num}
-     player1 player2 [player3] player4
-     Deck: {num cards in deck}
-     {Msgs}
-     input:{input prompt};
-     ************************************/
+    printf("************ Slapjack Client ************\n");
 
-    mvprintw(0, 0, "************ Slapjack Client ************");
-    mvprintw(6, 0, "*****************************************");
-
-    while((recvMsg(self, sockfd, 30000) == 0)){
+    while(1){
         
-        mvprintw(SELF.y, SELF.x, SELF.msg);
+        numbytes = recv(sockfd, SELF.raw_str, MAXBUF -1, 0);
+        if(numbytes == -1){
+            perror("recv");
+            exit(1);
+        }
+        else if(numbytes == 0){
+            perror("recv: closed connection");
+            continue;
+        }
 
-        mvprintw(5, 0, "input:                 ");
-        move(5, 7);
+        SELF.raw_str[numbytes] = '\0';
+    
+        if(parseGameProt(self) != 0){
+            printf("parseGameProt: parse error: %s\n", SELF.raw_str);
+            continue;
+        }
 
+        printf("%s\n", SELF.msg);
+        
         switch(SELF.input_type){
             case INPUTTYPE_NONE:
                 continue;
 
             case INPUTTYPE_WAIT:
-                printw("<waiting>");
                 continue;
 
             case INPUTTYPE_CHAR:
-                printw("<press key>");
-                noecho();
-                return_msg[0] = getch();
-                return_msg[1] = '\0';
+                printf("<press key>");
+                scanf("%c",  return_msg);
                 break;
 
             case INPUTTYPE_STR:
-                echo();
-                scanw("%s", return_msg);
+                printf(":");
+                scanf("%s", return_msg);
                 break;
 
             default:
-                mvprintw(3, 0, "ERROR: invalid input type");
+                printf("ERROR: invalid input type\n");
                 continue;
         }
 
-        getch();
-
         //Send reply
-        if(send(sockfd, SELF.raw_str, strlen(return_msg), 0) == -1){
+        if(send(sockfd, return_msg, strlen(return_msg), 0) == -1){
             perror("send");
-            //break;
+            break;
         }
     }
-
-    getch();
-    //Restore Terminal settings
-    endwin();
-
+    close(sockfd);
     perror("recv/send");
     exit(1);
 }

@@ -27,6 +27,7 @@ void playerInit(int sockfd){
 
     //get player's name
     gameProtInit(&gameP, INPUTTYPE_STR, 4, 0, "Enter Player Name");
+    printf("sending to client: %s", *gameP.raw_str);
     
     sendMsg(&gameP, SELF.sockfd);
     recvMsg(&gameP, SELF.sockfd, -1);

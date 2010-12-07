@@ -180,7 +180,7 @@ int acceptConnections(){
             close(new_fd);
             exit(0);
         }
-        printf("Closeing socket %d\n", new_fd);
+        printf("Closing socket %d\n", new_fd);
         close(new_fd);  // parent doesn't need this
     }    
     
@@ -201,5 +201,5 @@ int main(){
         acceptConnections();
         exit(1);          
     }
-    exit(1);
+    sleep(-1);
 }
