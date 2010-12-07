@@ -158,13 +158,7 @@ int gameTerm(int sockfd){
     mvprintw(0, 0, "************ Slapjack Client ************");
     mvprintw(6, 0, "*****************************************");
 
-    while(1){
-        recvMsg(self, sockfd, -1);
-        
-        if (parseGameProt(self) != 0){
-            printf("gameTerm: invalid command: %s\n", SELF.raw_str);
-            break;
-        }
+    while((recvMsg(self, sockfd, 30000) == 0)){
         
         mvprintw(SELF.y, SELF.x, SELF.msg);
 
@@ -196,8 +190,10 @@ int gameTerm(int sockfd){
                 continue;
         }
 
+        getch();
+
         //Send reply
-        if(send(sockfd, return_msg, strlen(return_msg), 0) == -1){
+        if(send(sockfd, SELF.raw_str, strlen(return_msg), 0) == -1){
             perror("send");
             //break;
         }

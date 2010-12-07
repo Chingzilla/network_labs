@@ -27,7 +27,7 @@ int broadcastIP(){
     char s[INET6_ADDRSTRLEN];
 
     memset(&hints, 0, sizeof hints);
-    hints.ai_family = AF_UNSPEC; // set to AF_INET to force IPv4
+    hints.ai_family = AF_INET; // set to AF_INET to force IPv4
     hints.ai_socktype = SOCK_DGRAM;
     hints.ai_flags = AI_PASSIVE; // use my IP
 
@@ -180,7 +180,7 @@ int acceptConnections(){
             close(new_fd);
             exit(0);
         }
-        //printf("Closeing socket %d\n", new_fd);
+        printf("Closeing socket %d\n", new_fd);
         close(new_fd);  // parent doesn't need this
     }    
     

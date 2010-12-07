@@ -57,11 +57,13 @@ int parseGameProt(struct GameProt * self){
     current_info = strtok(NULL, "\0");
     strcpy(SELF.msg, current_info);
 
+    printf("%s -> %d, %d, %d, %s",SELF.raw_str, SELF.input_type, SELF.y, SELF.x, SELF.msg);
+
     return 0;
 }
 
 int buildGameProt(struct GameProt * self){
-    sprintf(SELF.raw_str, "%d:%d:%d:%s", SELF.input_type, SELF.y, SELF.x, SELF.msg);
+    sprintf(SELF.raw_str, ":%d:%d:%d:%s:", SELF.input_type, SELF.y, SELF.x, SELF.msg);
 
     return 0;
 }
@@ -69,6 +71,10 @@ int buildGameProt(struct GameProt * self){
 int sendMsg(struct GameProt * gameP, int sockfd){
     int rv;
     struct pollfd ufds;
+
+    if(buildGameProt(gameP) != 0){
+        return 2;
+    }
 
     ufds.fd = sockfd;
     ufds.events = POLLOUT;
@@ -86,8 +92,9 @@ int sendMsg(struct GameProt * gameP, int sockfd){
     }
     else{
         if (ufds.revents & POLLOUT){
-            if (send(sockfd, (*gameP).msg, strlen((*gameP).msg), 0) == -1)
-                perror("send");
+            printf("sendMsg: sending: %s", (*gameP).raw_str);
+            if (send(sockfd, (*gameP).raw_str, strlen((*gameP).msg), 0) == -1)
+                perror("sendMsg");
             return 0;
         }
     }
@@ -116,13 +123,25 @@ int recvMsg(struct GameProt * gameP, int sockfd, int timeout){
     }
     else{
         if (ufds.revents & POLLIN){
-            numbytes = recv(sockfd, (*gameP).msg, MAXBUF -1, 0);
-            if( numbytes == -1){
-                perror("recv");
+            numbytes = recv(sockfd, (*gameP).raw_str, MAXBUF -1, 0);
+            if( numbytes == 0){
+                perror("recvMsg: connection closed");
+                close(sockfd);
+                exit(0);
+            }
+            if( numbytes < 0){
+                perror("recvMsg");
                 return 1;
             }
-            (*gameP).msg[numbytes] = '\0';
+            (*gameP).raw_str[numbytes] = '\0';
         }
     }
+    printf("rescMsg: %s\n", (*gameP).raw_str);
+    
+    //Parse out msg
+    if( parseGameProt(gameP) !=0 ){
+        return 1;
+    }
+
     return 0;
 }
